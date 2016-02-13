@@ -11,11 +11,23 @@ module.exports = function () {
 	};
 
 	UpdateRancherCommand.prototype.handle = function () {
-		var body = this.prepareJsonBody();
+		var payload = this.prepareJsonBody();
 
-		Rancher.findCertByName(this.domain, function (err, response, body) {
-			console.log(err);
-		});
+		Rancher.findCertByName(this.domain, function (data) {
+			if (data.length) {
+				// an existing certificate exists. Update it.
+				var id = data[0].id;
+
+				Rancher.updateCertificateById(id, payload, function (data) {
+					console.log(data);
+				});
+			} else {
+				// no certificate exists. Create one!
+				Rancher.createCertificate(payload, function (data) {
+					console.log(data);
+				});
+			}
+		}.bind(this));
 
 		// console.log(body);
 	}
