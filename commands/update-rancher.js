@@ -19,12 +19,12 @@ module.exports = function () {
 				var id = data[0].id;
 
 				Rancher.updateCertificateById(id, payload, function (data) {
-					console.log(data);
+					console.log('updated', data);
 				});
 			} else {
 				// no certificate exists. Create one!
 				Rancher.createCertificate(payload, function (data) {
-					console.log(data);
+					console.log('created', data);
 				});
 			}
 		}.bind(this));
