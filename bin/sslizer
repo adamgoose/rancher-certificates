@@ -1,0 +1,39 @@
+#!/usr/bin/env node
+
+var cli = require('cli');
+var UpdateRancherCommand = require('../commands/update-rancher.js');
+
+cli.parse({
+	'file': ['f', 'Path to domains.txt file', 'file', './domains.txt']
+}, ['deploy_challenge', 'clean_challenge', 'deploy_cert', 'run']);
+
+// Main Controller
+cli.main(function (args, options) {
+
+	// Log the CLI information
+	// TODO: wrap this in a flag
+	console.log(cli.command, args, options);
+
+	function dispatch(command) {
+		return command.handle();
+	}
+
+	switch (cli.command) {
+	case 'deploy_challenge':
+
+		break;
+
+	case 'clean_challenge':
+
+		break;
+
+	case 'deploy_cert':
+		var cmd = new UpdateRancherCommand(args[0], args[1], args[2], args[3]);
+		dispatch(cmd);
+		break;
+
+	case 'run':
+
+		break;
+	}
+});

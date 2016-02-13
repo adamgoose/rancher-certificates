@@ -1,0 +1,15 @@
+{
+  "name": "rancher-sslizer",
+  "version": "1.0.0",
+  "description": "Simple script to assist in installing free SSL Certificates (via LetsEncrypt) into your Rancher environment.",
+  "main": "bin/sslizer",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Adam Engebretson <adam@enge.me>",
+  "license": "ISC",
+  "dependencies": {
+    "cli": "^0.11.1",
+    "request": "^2.69.0"
+  }
+}
