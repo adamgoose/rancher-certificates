@@ -1,33 +1,37 @@
 #!/usr/bin/env node
 
 var cli = require('cli');
-var UpdateRancherCommand = require('../commands/update-rancher.js');
+var UpdateRancherCommand = require('../commands/UpdateRancherCommand');
+
+// Enable --debug/-d and --catch/-c flags
+cli.enable('status', 'catchall');
 
 cli.parse({}, ['deploy_challenge', 'clean_challenge', 'deploy_cert']);
 
 // Main Controller
 cli.main(function (args, options) {
 
-	// Log the CLI information
-	// TODO: wrap this in a flag
-	console.log(cli.command, args, options);
+	cli.debug('Received command: ' + cli.command);
+	cli.debug('Arguments: ' + JSON.stringify(args));
 
 	function dispatch(command) {
 		return command.handle();
 	}
 
 	switch (cli.command) {
-	case 'deploy_challenge':
-
-		break;
-
-	case 'clean_challenge':
-
-		break;
-
 	case 'deploy_cert':
 		var cmd = new UpdateRancherCommand(args[0], args[1], args[2], args[3]);
 		dispatch(cmd);
 		break;
+
+	case 'deploy_challenge':
+		// Might add DNS support, but probably offered
+		// outside of the Rancher-specific image.
+		break;
+
+	case 'clean_challenge':
+		// Ditto.
+		break;
+
 	}
 });

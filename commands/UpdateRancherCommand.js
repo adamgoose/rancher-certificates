@@ -1,5 +1,5 @@
 var fs = require('fs');
-var Rancher = require('../lib/Rancher.js');
+var Rancher = require('../lib/Rancher');
 var cli = require('cli');
 
 module.exports = function () {
@@ -14,6 +14,8 @@ module.exports = function () {
 	UpdateRancherCommand.prototype.handle = function () {
 		var payload = this.prepareJsonBody();
 
+		cli.debug('Using payload: ' + JSON.stringify(payload));
+
 		Rancher.findCertByName(this.domain, function (data) {
 			if (data.length) {
 				var id = data[0].id;
@@ -21,11 +23,11 @@ module.exports = function () {
 				cli.info('Found existing certificate with ID ' + id);
 
 				Rancher.updateCertificateById(id, payload, function (data) {
-					cli.info('Updated certificate in Rancher!');
+					cli.ok('Updated certificate in Rancher!');
 				});
 			} else {
 				Rancher.createCertificate(payload, function (data) {
-					cli.info('Created certificate in Rancher!');
+					cli.ok('Created certificate in Rancher!');
 				});
 			}
 		}.bind(this));
