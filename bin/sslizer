@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var cli = require('cli');
+var LetsEncryptCommand = require('../commands/lets-encrypt.js');
 var UpdateRancherCommand = require('../commands/update-rancher.js');
 
 cli.parse({
@@ -33,7 +34,8 @@ cli.main(function (args, options) {
 		break;
 
 	case 'run':
-
+		var cmd = new LetsEncryptCommand(options.file);
+		dispatch(cmd);
 		break;
 	}
 });
