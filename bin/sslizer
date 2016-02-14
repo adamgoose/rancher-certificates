@@ -10,10 +10,6 @@ cli.parse({
 // Main Controller
 cli.main(function (args, options) {
 
-	// Log the CLI information
-	// TODO: wrap this in a flag
-	console.log(cli.command, args, options);
-
 	function dispatch(command) {
 		return command.handle();
 	}

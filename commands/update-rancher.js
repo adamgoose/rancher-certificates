@@ -13,18 +13,22 @@ module.exports = function () {
 	UpdateRancherCommand.prototype.handle = function () {
 		var payload = this.prepareJsonBody();
 
+		console.log('Using payload for create/update requests:', payload);
+
 		Rancher.findCertByName(this.domain, function (data) {
 			if (data.length) {
 				// an existing certificate exists. Update it.
 				var id = data[0].id;
 
+				console.log('Found existing certificate with ID ' + id);
+
 				Rancher.updateCertificateById(id, payload, function (data) {
-					console.log('updated', data);
+					console.log('Updated certificate in Rancher!');
 				});
 			} else {
 				// no certificate exists. Create one!
 				Rancher.createCertificate(payload, function (data) {
-					console.log('created', data);
+					console.log('Created certificate in Rancher!');
 				});
 			}
 		}.bind(this));
