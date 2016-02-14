@@ -1,12 +1,11 @@
 #!/usr/bin/env node
 
 var cli = require('cli');
-var LetsEncryptCommand = require('../commands/lets-encrypt.js');
 var UpdateRancherCommand = require('../commands/update-rancher.js');
 
 cli.parse({
 	'file': ['f', 'Path to domains.txt file', 'file', './domains.txt']
-}, ['deploy_challenge', 'clean_challenge', 'deploy_cert', 'run']);
+}, ['deploy_challenge', 'clean_challenge', 'deploy_cert']);
 
 // Main Controller
 cli.main(function (args, options) {
@@ -30,11 +29,6 @@ cli.main(function (args, options) {
 
 	case 'deploy_cert':
 		var cmd = new UpdateRancherCommand(args[0], args[1], args[2], args[3]);
-		dispatch(cmd);
-		break;
-
-	case 'run':
-		var cmd = new LetsEncryptCommand(options.file);
 		dispatch(cmd);
 		break;
 	}
