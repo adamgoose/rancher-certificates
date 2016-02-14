@@ -1,3 +1,5 @@
+** Total work in progress... Have a look, but don't even try it! **
+
 # LetsEncrypt for Rancher
 
 This container provides a convenient and easy way to manage SSL (https://) Certificate Issuing and Deployment using [LetsEncrypt](https://letsencrypt.org/). Upon Issuing an SSL Certificate, the certificate will automatically be added to your [Rancher](http://rancher.com) Environment. If you manually renew your cert (automatic renewals not yet supported), the old Rancher cert will be updated to the new one. To top it off, we'll automatically redirect all requests to this container to https://. Thus, your web server container can simply be configured to receive requests on port 80 without ssl, and we'll take care of the rest!
