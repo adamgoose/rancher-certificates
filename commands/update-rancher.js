@@ -41,7 +41,7 @@ module.exports = function () {
 			name: this.domain,
 			key: fs.readFileSync(this.keyfile, 'utf8'),
 			cert: fs.readFileSync(this.certfile, 'utf8'),
-			chain: this.chainfile ? fs.readFileSync(this.chainfile, 'utf8') : null,
+			chain: this.chainfile ? fs.readFileSync(this.chainfile.replace('full', ''), 'utf8') : null,
 		};
 	}
 
