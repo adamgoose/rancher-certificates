@@ -21,11 +21,11 @@ module.exports = function () {
 				cli.info('Found existing certificate with ID ' + id);
 
 				Rancher.updateCertificateById(id, payload, function (data) {
-					cli.info('== sslizer ==> Updated certificate in Rancher!');
+					cli.info('Updated certificate in Rancher!');
 				});
 			} else {
 				Rancher.createCertificate(payload, function (data) {
-					cli.info('== sslizer ==> Created certificate in Rancher!');
+					cli.info('Created certificate in Rancher!');
 				});
 			}
 		}.bind(this));
