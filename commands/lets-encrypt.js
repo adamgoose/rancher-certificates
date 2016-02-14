@@ -10,8 +10,10 @@ module.exports = function () {
 
 		var process = './letsencrypt.sh -c -k rancher-certificates/bin/sslizer';
 
-		cli.exec(process, function (data) {
-			console.log(data);
+		cli.exec(process, function (lines) {
+			foreach(lines as line) {
+				cli.ok(line);
+			}
 		});
 	}
 
