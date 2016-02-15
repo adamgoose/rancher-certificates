@@ -56,7 +56,7 @@ When invoking the `sslizer` command, LetsEncrypt provides the following CLI argu
 
     sslizer deploy_cert {your_domain.com} {path to privkey} {path to cert} {path to fullchain}
 
-The "fullchain" file provided includes the certificate *and* the chain certificate. Rancher only accepts the certificate and chain certificates to be separated into two different fields. Thus, when `sslizer deploy_cert` is invoked, we remove the string `full` from the provided path. This provides us with the "chain" only, albeit wonky.
+The "fullchain" file provided includes the certificate *and* the chain certificate. Rancher expects the certificate and chain to be separated into two different fields. Thus, when `sslizer deploy_cert` is invoked, we remove the string `full` from the last provided path. This provides us with the "chain" only, albeit wonky.
 
 ## Roadmap
 
