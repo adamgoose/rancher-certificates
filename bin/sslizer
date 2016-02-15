@@ -14,14 +14,11 @@ cli.main(function (args, options) {
 	cli.debug('Received command: ' + cli.command);
 	cli.debug('Arguments: ' + JSON.stringify(args));
 
-	function dispatch(command) {
-		return command.handle();
-	}
-
 	switch (cli.command) {
 	case 'deploy_cert':
 		var cmd = new UpdateRancherCommand(args[0], args[1], args[2], args[3]);
-		dispatch(cmd);
+
+		cmd.handle();
 		break;
 
 	case 'deploy_challenge':
