@@ -52,6 +52,12 @@ This container uses an incredibly simple-to-use bash script, provided by [lukas2
 
 We have configured this bash script (`/etc/letsencrypt.sh/config.sh`) to call our CLI tool (NodeJS) as a "hook", which uploads the provided certificate to Rancher. To learn more about this CLI, try `sslizer --help`.
 
+When calling the `sslizer` command LetsEncrypt is passing us the following CLI arguments:
+
+    sslizer deploy_cert {your_domain.com} {path to privkey} {path to cert} {path to fullchain}
+
+The "fullchain" file provided includes the certificate *and* the chain certificate. Rancher only accepts the certificate and chain certificates to be separated into two different fields. Thus, when `sslizer deploy_cert` is invoked, we remove the string `full` from the provided path. This provides us with the "chain" only, albeit wonky.
+
 ## Roadmap
 
 - [x] Use LetsEncrypt default paths.
