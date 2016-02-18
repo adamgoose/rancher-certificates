@@ -20,12 +20,11 @@ You'll frequently need to Execute a Shell inside the container. You can do this 
 
     docker exec -it ${CONTAINER_ID} /bin/bash
 
-You'll need to configure the container with a Rancher API Key if you would like it to automatically update certificates inside Rancher itself. Set the following environment variables by creating an API Key in the API tab of Rancher:
+You'll need to configure the container with a Rancher API Key if you would like it to automatically update certificates inside Rancher itself. Set the following label when creating your container:
 
     docker run -itd -p 80:80 \
-        -e RANCHER_ENDPOINT="" \ ## Please make sure to get this URL from the API Tab (I need the projects/{id} portion)!
-        -e RANCHER_ACCESS_KEY="" \
-        -e RANCHER_SECRET_KEY="" \
+        -l io.rancher.container.create_agent=true
+        -l io.rancher.container.agent.role=environment
         adamgoose/sslizer
 
 ## Usage
