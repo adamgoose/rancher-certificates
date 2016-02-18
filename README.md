@@ -10,13 +10,11 @@ First, let's get a container running. Simply use the `adamgoose/sslizer` image w
 
     docker run -itd -p 80:80 adamgoose/sslizer
 
-If you would like to persist your certificates to your host, you can mount the `/var/lib/certs` directory.
+If you would like to persist your certificates to your host, you can mount the `/var/lib/letsencrypt.sh` directory. This directory is also where the `domains.txt` file is located.
 
-    docker run -itd -p 80:80 -v /path/on/host:/var/lib/certs adamgoose/sslizer
+    docker run -itd -p 80:80 -v /path/on/host:/var/lib/letsencrypt.sh adamgoose/sslizer
 
-> You can also mount the /var/lib/domains.txt file if you'd like to control the list of domains from the host.
-
-You'll frequently need to Execute a Shell inside the container. You can do this from the Rancher UI, or SSH on to the host, execute `bash ps` to find the container ID (first column). Then, try this:
+You'll frequently need to Execute a Shell inside the container. You can do this from the Rancher UI; or SSH on to the host, execute `bash ps` to find the container ID (first column). Then, try this:
 
     docker exec -it ${CONTAINER_ID} /bin/bash
 
@@ -29,13 +27,13 @@ You'll need to configure the container with a Rancher API Key if you would like 
 
 ## Usage
 
-Enter a bash session on your running sslizer container (see above), and use `vim /var/lib/domains.txt` to edit the list of domains (one per line) you'd like to issue certificates for.
+Enter a bash session on your running sslizer container (see above), and use `vim /var/lib/letsencrypt.sh/domains.txt` to edit the list of domains (one per line) you'd like to issue certificates for.
 
 > LetsEncrypt has a rate limit of 5 certificates per week, so start with just a couple.
 
-Next, create a "Load Balancer" service in Rancher. Listen on port 80 for now. We'll need to have one certificate in Rancher before we can configure our Load Balancer to listen on https.
+Next, create a "Load Balancer" service in Rancher. Listen on port 80 for now; we'll need to have one certificate in Rancher before we can configure our Load Balancer to listen on https.
 
-Click "Show advanced routing options", and add your domains, listening on port 80 pointing to port 80 on your sslizer. For DNS reasons, it's wise to schedule your load balancer to always exist on a particular host. Do so under the "Scheduling" tab.
+Click "Show advanced routing options", and add your domains, listening on port 80, pointing to port 80 on your sslizer. For DNS reasons, it's wise to schedule your load balancer to always exist on a particular host. Do so under the "Scheduling" tab.
 
 Execute a shell into the container, and run LetsEncrypt with the following command.
 
@@ -45,9 +43,19 @@ If everything works smoothly, your certificates should be valid, and installed t
 
 Finally, you'll need to "Clone" your existing Load Balancer to add the https listener. Add a port listener on 443, check the "SSL" box, then select your certificate from the dropdown below. Just trash the old service, and start the new one!
 
-## LetsEncrypt Implementation Information
+## Notes: LetsEncrypt Configuration
 
-This container uses an incredibly simple-to-use bash script, provided by [lukas2511/letsencrypt.sh](https://github.com/lukas2511/letsencrypt.sh). If you are not able to use Rancher, or even Docker, consider this bash script a highly-recommended simplification of the entire certificate process.
+> ####### WARNING ####### This doesn't actually work, so don't try it yet. But I think I can find a way to make it work. Confd?
+
+`letsencrypt.sh` (referred to as the `letsencrypt` alias in this documentation) is [configurable](https://github.com/lukas2511/letsencrypt.sh/blob/master/config.sh.example) via environment variables. To override a configuration, simply set it as an environment variable on the container.
+
+    docker run -itd -p 80:80 \
+        -e CONTACT_EMAIL=admin@example.com
+        adamgoose/sslizer
+
+## Notes: LetsEncrypt Implementation
+
+This container uses an incredibly simple-to-use bash script, provided by [lukas2511/letsencrypt.sh](https://github.com/lukas2511/letsencrypt.sh). If you are not able to use Rancher, or even just Docker, consider this bash script a highly-recommended simplification of the entire certificate process.
 
 We have configured this bash script (`/etc/letsencrypt.sh/config.sh`) to call our CLI tool (NodeJS) as a "hook", which uploads the provided certificate to Rancher. To learn more about this CLI, try `sslizer --help`.
 
